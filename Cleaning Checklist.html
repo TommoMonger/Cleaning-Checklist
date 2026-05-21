@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Pressed Earth — Cleaning Checklist</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+  :root {
+    --green: #2d6a4f;
+    --green-light: #40916c;
+    --green-pale: #d8f3dc;
+    --green-mid: #b7e4c7;
+    --amber: #e76f00;
+    --amber-pale: #fff3e0;
+    --red: #c0392b;
+    --red-pale: #fdecea;
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --border: #d9d4c8;
+    --text: #1a1a1a;
+    --text-soft: #5a5a5a;
+    --mono: 'DM Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0 0 60px 0;
+  }
+
+  header {
+    background: var(--green);
+    color: white;
+    padding: 20px 24px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  header h1 {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  header p {
+    font-size: 12px;
+    opacity: 0.75;
+    margin-top: 2px;
+    font-family: var(--mono);
+  }
+
+  .container { max-width: 640px; margin: 0 auto; padding: 20px 16px; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+
+  .card h2 {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--text-soft);
+    margin-bottom: 14px;
+  }
+
+  label.field-label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--text);
+  }
+
+  select, input[type="text"], textarea {
+    width: 100%;
+    font-family: var(--sans);
+    font-size: 15px;
+    padding: 12px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--text);
+    appearance: none;
+    -webkit-appearance: none;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  select:focus, input[type="text"]:focus, textarea:focus {
+    border-color: var(--green-light);
+  }
+
+  .select-wrap { position: relative; }
+  .select-wrap::after {
+    content: '▾';
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-soft);
+    pointer-events: none;
+  }
+
+  .field-group { margin-bottom: 16px; }
+  .field-group:last-child { margin-bottom: 0; }
+
+  /* Areas */
+  .areas-section { display: none; }
+  .areas-section.visible { display: block; }
+
+  .role-badge {
+    display: inline-block;
+    background: var(--green-pale);
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 600;
+    font-family: var(--mono);
+    padding: 4px 10px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+  }
+
+  .area-item {
+    border-bottom: 1px solid var(--border);
+  }
+
+  .area-item:last-child { border-bottom: none; }
+
+  .area-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 14px 0;
+    cursor: pointer;
+  }
+
+  .expand-icon {
+    font-size: 12px;
+    color: var(--text-soft);
+    margin-top: 4px;
+    transition: transform 0.2s;
+    min-width: 12px;
+  }
+
+  .expand-icon.open { transform: rotate(90deg); }
+
+  .task-count {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-soft);
+    margin-top: 3px;
+    white-space: nowrap;
+  }
+
+  .task-count.complete { color: var(--green); font-weight: 600; }
+
+  .task-list {
+    padding: 0 0 12px 34px;
+  }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 7px 0;
+    border-top: 1px solid #f0ece4;
+  }
+
+  .task-checkbox {
+    width: 18px;
+    height: 18px;
+    min-width: 18px;
+    border: 2px solid var(--border);
+    border-radius: 4px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    background: white;
+    margin-top: 1px;
+    transition: all 0.15s;
+  }
+
+  .task-checkbox:checked {
+    background: var(--green-light);
+    border-color: var(--green-light);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8l4 4 6-7' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: 12px;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  .task-item label {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.4;
+    cursor: pointer;
+  }
+
+  .task-item input:checked + label {
+    text-decoration: line-through;
+    opacity: 0.5;
+  }
+
+  .area-item.all-done .area-header .area-label { color: var(--green); font-weight: 600; }
+
+  .area-label {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.4;
+    cursor: pointer;
+  }
+
+  .area-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-soft);
+    display: block;
+    margin-bottom: 1px;
+  }
+
+  /* Result selector */
+  .result-options {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
+  .result-btn {
+    padding: 10px 6px;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    background: white;
+    transition: all 0.15s;
+    text-align: center;
+  }
+
+  .result-btn[data-val="Pass"].active { background: var(--green-pale); border-color: var(--green); color: var(--green); }
+  .result-btn[data-val="Needs Attention"].active { background: var(--amber-pale); border-color: var(--amber); color: var(--amber); }
+  .result-btn[data-val="Fail"].active { background: var(--red-pale); border-color: var(--red); color: var(--red); }
+
+  /* Submit */
+  .submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-family: var(--sans);
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.2px;
+    transition: background 0.15s;
+  }
+
+  .submit-btn:hover { background: var(--green-light); }
+  .submit-btn:disabled { background: #aaa; cursor: not-allowed; }
+
+  /* Success */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .success-screen.visible { display: block; }
+
+  .success-icon {
+    width: 64px;
+    height: 64px;
+    background: var(--green-pale);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 16px;
+    font-size: 28px;
+  }
+
+  .success-screen h2 { font-size: 20px; margin-bottom: 8px; }
+  .success-screen p { color: var(--text-soft); font-size: 14px; margin-bottom: 24px; }
+
+  .reset-btn {
+    padding: 12px 28px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text);
+  }
+
+  .error-msg {
+    display: none;
+    background: var(--red-pale);
+    color: var(--red);
+    border: 1px solid #f5c6c6;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .progress-bar {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-top: 12px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--green-light);
+    border-radius: 2px;
+    transition: width 0.3s;
+    width: 0%;
+  }
+
+  .count-label {
+    font-size: 12px;
+    color: var(--text-soft);
+    font-family: var(--mono);
+    margin-top: 6px;
+  }
+
+  textarea { resize: vertical; min-height: 80px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Pressed Earth</h1>
+  <p>Nightly Cleaning Checklist</p>
+</header>
+
+<div class="container">
+
+  <!-- Main form -->
+  <div id="main-form">
+
+    <!-- Staff & Role -->
+    <div class="card">
+      <h2>Staff Details</h2>
+
+      <div class="field-group">
+        <label class="field-label" for="staff-select">Your Name</label>
+        <div class="select-wrap">
+          <select id="staff-select">
+            <option value="">— Select your name —</option>
+            <option>Aidan Cremin</option>
+            <option>Anish Baniya</option>
+            <option>Ayush Kandel</option>
+            <option>Chiara Anese</option>
+            <option>Corey Cuomo</option>
+            <option>Diana Seciri</option>
+            <option>Eloisa Cazzolli</option>
+            <option>Elsa Rutigliani</option>
+            <option>Emma Harvey</option>
+            <option>Eva Montocchio</option>
+            <option>Hugo Gallet</option>
+            <option>Loic Rambert</option>
+            <option>Luke Kelsey</option>
+            <option>Luke Harris</option>
+            <option>Mark Elias</option>
+            <option>Neve Donaldson</option>
+            <option>Nicolas Romeo</option>
+            <option>Nicoletta Notarpietro</option>
+            <option>Patrick Packer</option>
+            <option>Philippa Enkelmann</option>
+            <option>Shahir Mahmud</option>
+            <option>Sophie McGregor</option>
+            <option>Stefano Antiga</option>
+            <option>Thomas Younger</option>
+            <option>Tshering Tenzin</option>
+            <option>Walid Abdel Salam</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="role-select">Your Cleaning Role Tonight</label>
+        <div class="select-wrap">
+          <select id="role-select">
+            <option value="">— Select role —</option>
+            <option value="Mixing">Mixing</option>
+            <option value="Washing">Washing</option>
+            <option value="Packing Supervisor">Packing Supervisor</option>
+            <option value="Pouring Supervisor">Pouring Supervisor</option>
+            <option value="X6">X6</option>
+            <option value="Citrus">Citrus</option>
+            <option value="IE - Food">IE – Food</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Areas (shown after role selected) -->
+    <div class="card areas-section" id="areas-card">
+      <h2>Areas to Clean</h2>
+      <div class="role-badge" id="role-badge"></div>
+      <div id="areas-list"></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="count-label" id="count-label">0 of 0 areas ticked</div>
+    </div>
+
+    <!-- Result & Notes -->
+    <div class="card areas-section" id="result-card">
+      <h2>Overall Result</h2>
+      <label class="field-label">How did cleaning go tonight?</label>
+      <div class="result-options">
+        <button class="result-btn" data-val="Pass">✓ Pass</button>
+        <button class="result-btn" data-val="Needs Attention">⚠ Attention</button>
+        <button class="result-btn" data-val="Fail">✗ Fail</button>
+      </div>
+
+      <div class="field-group" style="margin-top:16px;">
+        <label class="field-label" for="notes">Notes / Issues</label>
+        <textarea id="notes" placeholder="Any issues, areas not completed, or follow-up required..."></textarea>
+      </div>
+    </div>
+
+    <div class="error-msg" id="error-msg"></div>
+
+    <button class="submit-btn" id="submit-btn" onclick="submitForm()">Submit Cleaning Record</button>
+
+  </div>
+
+  <!-- Success screen -->
+  <div class="success-screen" id="success-screen">
+    <div class="success-icon">✓</div>
+    <h2>Submitted</h2>
+    <p>Cleaning record saved. Thanks!</p>
+    <button class="reset-btn" onclick="resetForm()">Submit Another</button>
+  </div>
+
+</div>
+
+<script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx3fJf4G89Zww6MGX1ZrO2DF4YreZwEugWvVSzLGB-ZgPQPD9IWocAsaTidllm5OMyQ-A/exec';
+
+const ROLE_AREAS = {
+  'Mixing': [
+    { num: 1, name: 'Rear Yard', tasks: [
+      'Area free of clutter, rubbish and debris',
+      'All crates or tubs washed and stacked neatly',
+      'Cardboard compactor checked and emptied if full',
+      'Floors cleared of loose debris, cardboard and fruit pulp (including behind bins)'
+    ]},
+    { num: 5, name: 'Mixing Room', tasks: [
+      'Area free of clutter, rubbish and debris',
+      'All buckets and mixing equipment removed and washed',
+      'Pallets removed to rear yard for cleaning',
+      'Central floor area cleaned down'
+    ]},
+    { num: 13, name: 'North Cool Room', tasks: [
+      'All items stored and labelled correctly, oldest stock rotated to front',
+      'Floors free of loose fruit and debris'
+    ]}
+  ],
+  'Washing': [
+    { num: 2, name: 'Rear Lane / Return Storage', tasks: [
+      'Area free of clutter, rubbish and debris',
+      'Items sorted and stacked neatly'
+    ]},
+    { num: 3, name: 'Washing Area', tasks: [
+      'Dishwasher drained and rinsed clean',
+      'Benchtops, sinks and walls scrubbed clean and sanitised',
+      'Floor scrubbed with Hercules solution, rinsed and squeegeed dry',
+      'All equipment returned to correct storage',
+      'Area free of rubbish and debris'
+    ]},
+    { num: 4, name: 'Chemical Storage Corridor', tasks: [
+      'Area free of clutter, rubbish and debris',
+      'All chemicals stored in designated area with lids secured'
+    ]},
+    { num: 6, name: 'Laundry / Toilet', tasks: [
+      'Area free of clutter, rubbish and debris',
+      'Floor mopped',
+      'Bins emptied',
+      'Hand wash basin cleaned and hand towel checked/replaced'
+    ]},
+    { num: 8, name: 'Labelling / Packaging Storage', tasks: [
+      'Area free of clutter, rubbish and debris'
+    ]}
+  ],
+  'Packing Supervisor': [
+    { num: 7, name: 'Packing Room', tasks: [
+      'Area free of clutter, rubbish and debris'
+    ]},
+    { num: 14, name: 'South Cool Room', tasks: [
+      'All items stored and labelled correctly, oldest stock rotated to front',
+      'Floors free of loose fruit and debris',
+      'No loose packing items or cardboard on floor'
+    ]}
+  ],
+  'Pouring Supervisor': [
+    { num: 9, name: 'Pouring Room', tasks: [
+      'Area free of clutter, rubbish and debris',
+      'All equipment cleaned and stored correctly',
+      'Caustic wash procedure completed'
+    ]},
+    { num: 16, name: 'Front Storage Racks', tasks: [
+      'Area free of clutter, rubbish and debris',
+      'All crates covered and neatly stacked'
+    ]}
+  ],
+  'X6': [
+    { num: 10, name: 'North Juicing Room', tasks: [
+      'All equipment cleaned and sanitised, stored correctly',
+      'Juicing machines removed and waste fruit cleaned ready for sanitising',
+      'Floors cleared and cleaned'
+    ]}
+  ],
+  'Citrus': [
+    { num: 11, name: 'South Juicing Room', tasks: [
+      'All equipment cleaned and sanitised, stored correctly',
+      'Juicing machines removed and waste fruit cleaned ready for sanitising',
+      'Floors cleared and cleaned'
+    ]}
+  ],
+  'IE - Food': [
+    { num: 12, name: 'Production Kitchen', tasks: [
+      'All equipment cleaned and stored correctly',
+      'Floors cleared and cleaned',
+      'Bins emptied'
+    ]},
+    { num: 17, name: 'Dry Store / Staff Kitchen', tasks: [
+      'All products correctly stored and labelled',
+      'Microwave cleaned and sanitised',
+      'Door closed'
+    ]}
+  ],
+  'Other': [
+    { num: 15, name: 'Cool Room Roofs', tasks: [
+      'Roof surfaces free of dust and debris'
+    ]},
+    { num: 18, name: 'Loading Yard / Car Park', tasks: [
+      'Area free of clutter, rubbish and debris',
+      'All crates, pallets and tubs neatly stacked and organised'
+    ]},
+    { num: 19, name: 'Front Workshop', tasks: [
+      'Area free of clutter, rubbish and debris',
+      'All tools stored correctly',
+      'Weekly: floor swept and vacuumed'
+    ]},
+    { num: 20, name: 'Upper Storage / Mezzanine', tasks: [
+      'Area free of clutter, rubbish and debris',
+      'All items put away'
+    ]}
+  ]
+};
+
+let selectedResult = '';
+
+document.getElementById('role-select').addEventListener('change', function() {
+  const role = this.value;
+  const areasCard = document.getElementById('areas-card');
+  const resultCard = document.getElementById('result-card');
+  const areasList = document.getElementById('areas-list');
+  const badge = document.getElementById('role-badge');
+
+  if (!role) {
+    areasCard.classList.remove('visible');
+    resultCard.classList.remove('visible');
+    return;
+  }
+
+  const areas = ROLE_AREAS[role] || [];
+  badge.textContent = role + ' — ' + areas.length + ' area' + (areas.length !== 1 ? 's' : '');
+
+  areasList.innerHTML = areas.map(a => `
+    <div class="area-item" id="area-wrap-${a.num}">
+      <div class="area-header" onclick="toggleArea(${a.num})">
+        <div class="area-label">
+          <span class="area-num">Area ${a.num}</span>
+          ${a.name}
+        </div>
+        <span class="task-count" id="task-count-${a.num}">0/${a.tasks.length}</span>
+        <span class="expand-icon" id="expand-${a.num}">▸</span>
+      </div>
+      <div class="task-list" id="tasks-${a.num}" style="display:none">
+        ${a.tasks.map((t, i) => `
+          <div class="task-item">
+            <input type="checkbox" class="task-checkbox" id="task-${a.num}-${i}" data-area="${a.num}" data-area-name="${a.name}" onchange="onTaskCheck(${a.num})">
+            <label for="task-${a.num}-${i}">${t}</label>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `).join('');
+
+  updateProgress();
+  areasCard.classList.add('visible');
+  resultCard.classList.add('visible');
+});
+
+function toggleArea(num) {
+  const tasks = document.getElementById('tasks-' + num);
+  const icon = document.getElementById('expand-' + num);
+  const open = tasks.style.display !== 'none';
+  tasks.style.display = open ? 'none' : 'block';
+  icon.classList.toggle('open', !open);
+}
+
+function onTaskCheck(areaNum) {
+  const taskBoxes = document.querySelectorAll(`.task-checkbox[data-area="${areaNum}"]`);
+  const checkedCount = [...taskBoxes].filter(cb => cb.checked).length;
+  const total = taskBoxes.length;
+  const countEl = document.getElementById('task-count-' + areaNum);
+  countEl.textContent = checkedCount + '/' + total;
+  countEl.classList.toggle('complete', checkedCount === total);
+  document.getElementById('area-wrap-' + areaNum).classList.toggle('all-done', checkedCount === total);
+  updateProgress();
+}
+
+function updateProgress() {
+  const allTasks = document.querySelectorAll('.task-checkbox');
+  const checkedTasks = document.querySelectorAll('.task-checkbox:checked');
+  const total = allTasks.length;
+  const checked = checkedTasks.length;
+  const pct = total > 0 ? (checked / total) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('count-label').textContent = checked + ' of ' + total + ' tasks completed';
+}
+
+document.querySelectorAll('.result-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.result-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    selectedResult = this.dataset.val;
+  });
+});
+
+function showError(msg) {
+  const el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.style.display = 'block';
+  setTimeout(() => el.style.display = 'none', 4000);
+}
+
+async function submitForm() {
+  const staff = document.getElementById('staff-select').value;
+  const role = document.getElementById('role-select').value;
+  const notes = document.getElementById('notes').value;
+
+  if (!staff) return showError('Please select your name.');
+  if (!role) return showError('Please select your cleaning role.');
+  if (!selectedResult) return showError('Please select an overall result.');
+
+  // Derive area completion from task checkboxes
+  const areaEls = document.querySelectorAll('[id^="area-wrap-"]');
+  const areasCompleted = [], areasSkipped = [];
+  areaEls.forEach(wrap => {
+    const num = wrap.id.replace('area-wrap-', '');
+    const tasks = wrap.querySelectorAll('.task-checkbox');
+    const done = [...tasks].filter(cb => cb.checked).length;
+    const name = tasks[0] ? tasks[0].dataset.areaName : num;
+    if (done === tasks.length && tasks.length > 0) areasCompleted.push(name);
+    else areasSkipped.push(name);
+  });
+  const totalAreas = areasCompleted.length + areasSkipped.length;
+
+  const now = new Date();
+  const timestamp = now.toLocaleString('en-AU', { timeZone: 'Australia/Perth' });
+  const dateKey = now.toLocaleDateString('en-AU', { timeZone: 'Australia/Perth' });
+
+  const payload = {
+    timestamp,
+    dateKey,
+    staff,
+    role,
+    areasCompleted: areasCompleted.join(', '),
+    areasSkipped: areasSkipped.join(', '),
+    totalAreas,
+    completedCount: areasCompleted.length,
+    result: selectedResult,
+    notes
+  };
+
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    await fetch(SHEETS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+
+    document.getElementById('main-form').style.display = 'none';
+    document.getElementById('success-screen').classList.add('visible');
+  } catch (err) {
+    showError('Submission failed. Check your connection and try again.');
+    btn.disabled = false;
+    btn.textContent = 'Submit Cleaning Record';
+  }
+}
+
+function resetForm() {
+  document.getElementById('staff-select').value = '';
+  document.getElementById('role-select').value = '';
+  document.getElementById('notes').value = '';
+  document.getElementById('areas-card').classList.remove('visible');
+  document.getElementById('result-card').classList.remove('visible');
+  document.querySelectorAll('.result-btn').forEach(b => b.classList.remove('active'));
+  selectedResult = '';
+  document.getElementById('main-form').style.display = 'block';
+  document.getElementById('success-screen').classList.remove('visible');
+  document.getElementById('submit-btn').disabled = false;
+  document.getElementById('submit-btn').textContent = 'Submit Cleaning Record';
+}
+</script>
+</body>
+</html>
