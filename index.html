@@ -25,7 +25,7 @@
     --sans: 'DM Sans', sans-serif;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
   body {
     font-family: var(--sans);
@@ -33,6 +33,7 @@
     color: var(--text);
     min-height: 100vh;
     padding: 0 0 60px 0;
+    touch-action: manipulation;
   }
 
   header {
@@ -45,18 +46,8 @@
     box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   }
 
-  header h1 {
-    font-size: 18px;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-  }
-
-  header p {
-    font-size: 12px;
-    opacity: 0.75;
-    margin-top: 2px;
-    font-family: var(--mono);
-  }
+  header h1 { font-size: 18px; font-weight: 700; letter-spacing: -0.3px; }
+  header p { font-size: 12px; opacity: 0.75; margin-top: 2px; font-family: var(--mono); }
 
   .container { max-width: 640px; margin: 0 auto; padding: 20px 16px; }
 
@@ -100,9 +91,7 @@
     transition: border-color 0.15s;
   }
 
-  select:focus, input[type="text"]:focus, textarea:focus {
-    border-color: var(--green-light);
-  }
+  select:focus, input[type="text"]:focus, textarea:focus { border-color: var(--green-light); }
 
   .select-wrap { position: relative; }
   .select-wrap::after {
@@ -118,7 +107,6 @@
   .field-group { margin-bottom: 16px; }
   .field-group:last-child { margin-bottom: 0; }
 
-  /* Areas */
   .areas-section { display: none; }
   .areas-section.visible { display: block; }
 
@@ -134,26 +122,29 @@
     margin-bottom: 14px;
   }
 
-  .area-item {
-    border-bottom: 1px solid var(--border);
-  }
-
+  .area-item { border-bottom: 1px solid var(--border); }
   .area-item:last-child { border-bottom: none; }
 
   .area-header {
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    padding: 14px 0;
+    padding: 16px 0;
     cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    min-height: 56px;
   }
+
+  .area-header:active { background: #f0f0f0; }
 
   .expand-icon {
     font-size: 12px;
     color: var(--text-soft);
     margin-top: 4px;
     transition: transform 0.2s;
-    min-width: 12px;
+    min-width: 16px;
+    padding: 4px;
   }
 
   .expand-icon.open { transform: rotate(90deg); }
@@ -164,64 +155,65 @@
     color: var(--text-soft);
     margin-top: 3px;
     white-space: nowrap;
+    padding: 4px 0;
   }
 
   .task-count.complete { color: var(--green); font-weight: 600; }
 
-  .task-list {
-    padding: 0 0 12px 34px;
-  }
+  .task-list { padding: 0 0 12px 34px; }
 
   .task-item {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    padding: 7px 0;
+    gap: 12px;
+    padding: 10px 0;
     border-top: 1px solid #f0ece4;
+    min-height: 44px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
   }
 
   .task-checkbox {
-    width: 18px;
-    height: 18px;
-    min-width: 18px;
+    width: 22px;
+    height: 22px;
+    min-width: 22px;
     border: 2px solid var(--border);
-    border-radius: 4px;
+    border-radius: 5px;
     cursor: pointer;
     appearance: none;
     -webkit-appearance: none;
     background: white;
     margin-top: 1px;
     transition: all 0.15s;
+    pointer-events: none;
   }
 
-  .task-checkbox:checked {
+  .task-checkbox.checked {
     background: var(--green-light);
     border-color: var(--green-light);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8l4 4 6-7' stroke='white' stroke-width='2.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-    background-size: 12px;
+    background-size: 14px;
     background-repeat: no-repeat;
     background-position: center;
   }
 
-  .task-item label {
+  .task-label {
     font-size: 13px;
     color: var(--text-soft);
-    line-height: 1.4;
-    cursor: pointer;
+    line-height: 1.5;
+    flex: 1;
+    pointer-events: none;
   }
 
-  .task-item input:checked + label {
-    text-decoration: line-through;
-    opacity: 0.5;
-  }
-
-  .area-item.all-done .area-header .area-label { color: var(--green); font-weight: 600; }
+  .task-item.done .task-label { text-decoration: line-through; opacity: 0.5; }
+  .area-item.all-done .area-label { color: var(--green); font-weight: 600; }
 
   .area-label {
     flex: 1;
     font-size: 15px;
     line-height: 1.4;
-    cursor: pointer;
+    pointer-events: none;
   }
 
   .area-num {
@@ -232,7 +224,6 @@
     margin-bottom: 1px;
   }
 
-  /* Result selector */
   .result-options {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -241,7 +232,7 @@
   }
 
   .result-btn {
-    padding: 10px 6px;
+    padding: 14px 6px;
     border: 2px solid var(--border);
     border-radius: 8px;
     font-family: var(--sans);
@@ -251,16 +242,19 @@
     background: white;
     transition: all 0.15s;
     text-align: center;
+    user-select: none;
+    -webkit-user-select: none;
+    min-height: 50px;
+    touch-action: manipulation;
   }
 
-  .result-btn[data-val="Pass"].active { background: var(--green-pale); border-color: var(--green); color: var(--green); }
-  .result-btn[data-val="Needs Attention"].active { background: var(--amber-pale); border-color: var(--amber); color: var(--amber); }
-  .result-btn[data-val="Fail"].active { background: var(--red-pale); border-color: var(--red); color: var(--red); }
+  .result-btn.active-pass { background: var(--green-pale); border-color: var(--green); color: var(--green); }
+  .result-btn.active-attention { background: var(--amber-pale); border-color: var(--amber); color: var(--amber); }
+  .result-btn.active-fail { background: var(--red-pale); border-color: var(--red); color: var(--red); }
 
-  /* Submit */
   .submit-btn {
     width: 100%;
-    padding: 16px;
+    padding: 18px;
     background: var(--green);
     color: white;
     border: none;
@@ -271,28 +265,21 @@
     cursor: pointer;
     letter-spacing: 0.2px;
     transition: background 0.15s;
+    touch-action: manipulation;
+    min-height: 56px;
   }
 
-  .submit-btn:hover { background: var(--green-light); }
+  .submit-btn:active { background: var(--green-light); }
   .submit-btn:disabled { background: #aaa; cursor: not-allowed; }
 
-  /* Success */
-  .success-screen {
-    display: none;
-    text-align: center;
-    padding: 40px 20px;
-  }
-
+  .success-screen { display: none; text-align: center; padding: 40px 20px; }
   .success-screen.visible { display: block; }
 
   .success-icon {
-    width: 64px;
-    height: 64px;
+    width: 64px; height: 64px;
     background: var(--green-pale);
     border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: flex; align-items: center; justify-content: center;
     margin: 0 auto 16px;
     font-size: 28px;
   }
@@ -301,7 +288,7 @@
   .success-screen p { color: var(--text-soft); font-size: 14px; margin-bottom: 24px; }
 
   .reset-btn {
-    padding: 12px 28px;
+    padding: 14px 28px;
     background: var(--bg);
     border: 1.5px solid var(--border);
     border-radius: 8px;
@@ -310,6 +297,7 @@
     font-weight: 600;
     cursor: pointer;
     color: var(--text);
+    touch-action: manipulation;
   }
 
   .error-msg {
@@ -323,28 +311,9 @@
     margin-bottom: 12px;
   }
 
-  .progress-bar {
-    height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    margin-top: 12px;
-    overflow: hidden;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: var(--green-light);
-    border-radius: 2px;
-    transition: width 0.3s;
-    width: 0%;
-  }
-
-  .count-label {
-    font-size: 12px;
-    color: var(--text-soft);
-    font-family: var(--mono);
-    margin-top: 6px;
-  }
+  .progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-top: 12px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--green-light); border-radius: 2px; transition: width 0.3s; width: 0%; }
+  .count-label { font-size: 12px; color: var(--text-soft); font-family: var(--mono); margin-top: 6px; }
 
   textarea { resize: vertical; min-height: 80px; }
 </style>
@@ -357,44 +326,50 @@
 </header>
 
 <div class="container">
-
-  <!-- Main form -->
   <div id="main-form">
 
-    <!-- Staff & Role -->
     <div class="card">
       <h2>Staff Details</h2>
-
       <div class="field-group">
         <label class="field-label" for="staff-select">Your Name</label>
         <div class="select-wrap">
           <select id="staff-select">
             <option value="">— Select your name —</option>
             <option>Aidan Cremin</option>
+            <option>Alessandro Pirrone</option>
+            <option>Alessandro Vario</option>
             <option>Anish Baniya</option>
             <option>Ayush Kandel</option>
+            <option>Blake Driscoll</option>
             <option>Chiara Anese</option>
+            <option>Claire Hannah</option>
             <option>Corey Cuomo</option>
+            <option>Dewan Azmain</option>
             <option>Diana Seciri</option>
             <option>Eloisa Cazzolli</option>
             <option>Elsa Rutigliani</option>
             <option>Emma Harvey</option>
             <option>Eva Montocchio</option>
             <option>Hugo Gallet</option>
+            <option>Ian Barr</option>
             <option>Loic Rambert</option>
-            <option>Luke Kelsey</option>
             <option>Luke Harris</option>
+            <option>Luke Kelsey</option>
             <option>Mark Elias</option>
             <option>Neve Donaldson</option>
             <option>Nicolas Romeo</option>
             <option>Nicoletta Notarpietro</option>
             <option>Patrick Packer</option>
+            <option>Peter Spence</option>
             <option>Philippa Enkelmann</option>
+            <option>Phub Dorji</option>
             <option>Shahir Mahmud</option>
             <option>Sophie McGregor</option>
             <option>Stefano Antiga</option>
             <option>Thomas Younger</option>
+            <option>Tizzy Daka</option>
             <option>Tshering Tenzin</option>
+            <option>Valerie Ridolfi</option>
             <option>Walid Abdel Salam</option>
             <option>Other</option>
           </select>
@@ -419,25 +394,22 @@
       </div>
     </div>
 
-    <!-- Areas (shown after role selected) -->
     <div class="card areas-section" id="areas-card">
       <h2>Areas to Clean</h2>
       <div class="role-badge" id="role-badge"></div>
       <div id="areas-list"></div>
       <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
-      <div class="count-label" id="count-label">0 of 0 areas ticked</div>
+      <div class="count-label" id="count-label">0 of 0 tasks completed</div>
     </div>
 
-    <!-- Result & Notes -->
     <div class="card areas-section" id="result-card">
       <h2>Overall Result</h2>
       <label class="field-label">How did cleaning go tonight?</label>
-      <div class="result-options">
+      <div class="result-options" id="result-options">
         <button class="result-btn" data-val="Pass">✓ Pass</button>
         <button class="result-btn" data-val="Needs Attention">⚠ Attention</button>
         <button class="result-btn" data-val="Fail">✗ Fail</button>
       </div>
-
       <div class="field-group" style="margin-top:16px;">
         <label class="field-label" for="notes">Notes / Issues</label>
         <textarea id="notes" placeholder="Any issues, areas not completed, or follow-up required..."></textarea>
@@ -445,19 +417,15 @@
     </div>
 
     <div class="error-msg" id="error-msg"></div>
-
-    <button class="submit-btn" id="submit-btn" onclick="submitForm()">Submit Cleaning Record</button>
-
+    <button class="submit-btn" id="submit-btn">Submit Cleaning Record</button>
   </div>
 
-  <!-- Success screen -->
   <div class="success-screen" id="success-screen">
     <div class="success-icon">✓</div>
     <h2>Submitted</h2>
     <p>Cleaning record saved. Thanks!</p>
-    <button class="reset-btn" onclick="resetForm()">Submit Another</button>
+    <button class="reset-btn" id="reset-btn">Submit Another</button>
   </div>
-
 </div>
 
 <script>
@@ -465,196 +433,195 @@ const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbx3fJf4G89Zww6MGX1Zr
 
 const ROLE_AREAS = {
   'Mixing': [
-    { num: 1, name: 'Rear Yard', tasks: [
-      'Area free of clutter, rubbish and debris',
-      'All crates or tubs washed and stacked neatly',
-      'Cardboard compactor checked and emptied if full',
-      'Floors cleared of loose debris, cardboard and fruit pulp (including behind bins)'
-    ]},
-    { num: 5, name: 'Mixing Room', tasks: [
-      'Area free of clutter, rubbish and debris',
-      'All buckets and mixing equipment removed and washed',
-      'Pallets removed to rear yard for cleaning',
-      'Central floor area cleaned down'
-    ]},
-    { num: 13, name: 'North Cool Room', tasks: [
-      'All items stored and labelled correctly, oldest stock rotated to front',
-      'Floors free of loose fruit and debris'
-    ]}
+    { num: 1, name: 'Rear Yard', tasks: ['Area free of clutter, rubbish and debris','All crates or tubs washed and stacked neatly','Cardboard compactor checked and emptied if full','Floors cleared of loose debris, cardboard and fruit pulp (including behind bins)'] },
+    { num: 5, name: 'Mixing Room', tasks: ['Area free of clutter, rubbish and debris','All buckets and mixing equipment removed and washed','Pallets removed to rear yard for cleaning','Central floor area cleaned down'] },
+    { num: 13, name: 'North Cool Room', tasks: ['All items stored and labelled correctly, oldest stock rotated to front','Floors free of loose fruit and debris'] }
   ],
   'Washing': [
-    { num: 2, name: 'Rear Lane / Return Storage', tasks: [
-      'Area free of clutter, rubbish and debris',
-      'Items sorted and stacked neatly'
-    ]},
-    { num: 3, name: 'Washing Area', tasks: [
-      'Dishwasher drained and rinsed clean',
-      'Benchtops, sinks and walls scrubbed clean and sanitised',
-      'Floor scrubbed with Hercules solution, rinsed and squeegeed dry',
-      'All equipment returned to correct storage',
-      'Area free of rubbish and debris'
-    ]},
-    { num: 4, name: 'Chemical Storage Corridor', tasks: [
-      'Area free of clutter, rubbish and debris',
-      'All chemicals stored in designated area with lids secured'
-    ]},
-    { num: 6, name: 'Laundry / Toilet', tasks: [
-      'Area free of clutter, rubbish and debris',
-      'Floor mopped',
-      'Bins emptied',
-      'Hand wash basin cleaned and hand towel checked/replaced'
-    ]},
-    { num: 8, name: 'Labelling / Packaging Storage', tasks: [
-      'Area free of clutter, rubbish and debris'
-    ]}
+    { num: 2, name: 'Rear Lane / Return Storage', tasks: ['Area free of clutter, rubbish and debris','Items sorted and stacked neatly'] },
+    { num: 3, name: 'Washing Area', tasks: ['Dishwasher drained and rinsed clean','Benchtops, sinks and walls scrubbed clean and sanitised','Floor scrubbed with Hercules solution, rinsed and squeegeed dry','All equipment returned to correct storage','Area free of rubbish and debris'] },
+    { num: 4, name: 'Chemical Storage Corridor', tasks: ['Area free of clutter, rubbish and debris','All chemicals stored in designated area with lids secured'] },
+    { num: 6, name: 'Laundry / Toilet', tasks: ['Area free of clutter, rubbish and debris','Floor mopped','Bins emptied','Hand wash basin cleaned and hand towel checked/replaced'] },
+    { num: 8, name: 'Labelling / Packaging Storage', tasks: ['Area free of clutter, rubbish and debris'] }
   ],
   'Packing Supervisor': [
-    { num: 7, name: 'Packing Room', tasks: [
-      'Area free of clutter, rubbish and debris'
-    ]},
-    { num: 14, name: 'South Cool Room', tasks: [
-      'All items stored and labelled correctly, oldest stock rotated to front',
-      'Floors free of loose fruit and debris',
-      'No loose packing items or cardboard on floor'
-    ]}
+    { num: 7, name: 'Packing Room', tasks: ['Area free of clutter, rubbish and debris'] },
+    { num: 14, name: 'South Cool Room', tasks: ['All items stored and labelled correctly, oldest stock rotated to front','Floors free of loose fruit and debris','No loose packing items or cardboard on floor'] }
   ],
   'Pouring Supervisor': [
-    { num: 9, name: 'Pouring Room', tasks: [
-      'Area free of clutter, rubbish and debris',
-      'All equipment cleaned and stored correctly',
-      'Caustic wash procedure completed'
-    ]},
-    { num: 16, name: 'Front Storage Racks', tasks: [
-      'Area free of clutter, rubbish and debris',
-      'All crates covered and neatly stacked'
-    ]}
+    { num: 9, name: 'Pouring Room', tasks: ['Area free of clutter, rubbish and debris','All equipment cleaned and stored correctly','Caustic wash procedure completed'] },
+    { num: 16, name: 'Front Storage Racks', tasks: ['Area free of clutter, rubbish and debris','All crates covered and neatly stacked'] }
   ],
   'X6': [
-    { num: 10, name: 'North Juicing Room', tasks: [
-      'All equipment cleaned and sanitised, stored correctly',
-      'Juicing machines removed and waste fruit cleaned ready for sanitising',
-      'Floors cleared and cleaned'
-    ]}
+    { num: 10, name: 'North Juicing Room', tasks: ['All equipment cleaned and sanitised, stored correctly','Juicing machines removed and waste fruit cleaned ready for sanitising','Floors cleared and cleaned'] }
   ],
   'Citrus': [
-    { num: 11, name: 'South Juicing Room', tasks: [
-      'All equipment cleaned and sanitised, stored correctly',
-      'Juicing machines removed and waste fruit cleaned ready for sanitising',
-      'Floors cleared and cleaned'
-    ]}
+    { num: 11, name: 'South Juicing Room', tasks: ['All equipment cleaned and sanitised, stored correctly','Juicing machines removed and waste fruit cleaned ready for sanitising','Floors cleared and cleaned'] }
   ],
   'IE - Food': [
-    { num: 12, name: 'Production Kitchen', tasks: [
-      'All equipment cleaned and stored correctly',
-      'Floors cleared and cleaned',
-      'Bins emptied'
-    ]},
-    { num: 17, name: 'Dry Store / Staff Kitchen', tasks: [
-      'All products correctly stored and labelled',
-      'Microwave cleaned and sanitised',
-      'Door closed'
-    ]}
+    { num: 12, name: 'Production Kitchen', tasks: ['All equipment cleaned and stored correctly','Floors cleared and cleaned','Bins emptied'] },
+    { num: 17, name: 'Dry Store / Staff Kitchen', tasks: ['All products correctly stored and labelled','Microwave cleaned and sanitised','Door closed'] }
   ],
   'Other': [
-    { num: 15, name: 'Cool Room Roofs', tasks: [
-      'Roof surfaces free of dust and debris'
-    ]},
-    { num: 18, name: 'Loading Yard / Car Park', tasks: [
-      'Area free of clutter, rubbish and debris',
-      'All crates, pallets and tubs neatly stacked and organised'
-    ]},
-    { num: 19, name: 'Front Workshop', tasks: [
-      'Area free of clutter, rubbish and debris',
-      'All tools stored correctly',
-      'Weekly: floor swept and vacuumed'
-    ]},
-    { num: 20, name: 'Upper Storage / Mezzanine', tasks: [
-      'Area free of clutter, rubbish and debris',
-      'All items put away'
-    ]}
+    { num: 15, name: 'Cool Room Roofs', tasks: ['Roof surfaces free of dust and debris'] },
+    { num: 18, name: 'Loading Yard / Car Park', tasks: ['Area free of clutter, rubbish and debris','All crates, pallets and tubs neatly stacked and organised'] },
+    { num: 19, name: 'Front Workshop', tasks: ['Area free of clutter, rubbish and debris','All tools stored correctly','Weekly: floor swept and vacuumed'] },
+    { num: 20, name: 'Upper Storage / Mezzanine', tasks: ['Area free of clutter, rubbish and debris','All items put away'] }
   ]
 };
 
+// Track state in JS rather than relying on DOM checked state
+const taskState = {};
 let selectedResult = '';
 
+function buildAreas(role) {
+  const areas = ROLE_AREAS[role] || [];
+  const list = document.getElementById('areas-list');
+  list.innerHTML = '';
+  taskState[role] = {};
+
+  areas.forEach(a => {
+    taskState[role][a.num] = a.tasks.map(() => false);
+
+    const wrap = document.createElement('div');
+    wrap.className = 'area-item';
+    wrap.id = 'area-wrap-' + a.num;
+
+    // Header
+    const header = document.createElement('div');
+    header.className = 'area-header';
+    header.innerHTML = `
+      <div class="area-label"><span class="area-num">Area ${a.num}</span>${a.name}</div>
+      <span class="task-count" id="task-count-${a.num}">0/${a.tasks.length}</span>
+      <span class="expand-icon" id="expand-${a.num}">▸</span>
+    `;
+
+    // Task list container
+    const taskContainer = document.createElement('div');
+    taskContainer.className = 'task-list';
+    taskContainer.id = 'tasks-' + a.num;
+    taskContainer.style.display = 'none';
+
+    a.tasks.forEach((t, i) => {
+      const item = document.createElement('div');
+      item.className = 'task-item';
+      item.dataset.area = a.num;
+      item.dataset.idx = i;
+      item.innerHTML = `<div class="task-checkbox" id="chk-${a.num}-${i}"></div><span class="task-label">${t}</span>`;
+      taskContainer.appendChild(item);
+    });
+
+    wrap.appendChild(header);
+    wrap.appendChild(taskContainer);
+    list.appendChild(wrap);
+
+    // Touch-safe toggle for area header
+    header.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      toggleArea(a.num);
+    });
+    header.addEventListener('click', function(e) {
+      toggleArea(a.num);
+    });
+
+    // Touch-safe task checking
+    taskContainer.addEventListener('touchend', function(e) {
+      e.preventDefault();
+      const item = e.target.closest('.task-item');
+      if (item) toggleTask(item, role);
+    });
+    taskContainer.addEventListener('click', function(e) {
+      const item = e.target.closest('.task-item');
+      if (item) toggleTask(item, role);
+    });
+  });
+
+  updateProgress(role);
+}
+
+function toggleArea(num) {
+  const tasks = document.getElementById('tasks-' + num);
+  const icon = document.getElementById('expand-' + num);
+  const isOpen = tasks.style.display !== 'none';
+  tasks.style.display = isOpen ? 'none' : 'block';
+  icon.classList.toggle('open', !isOpen);
+}
+
+function toggleTask(item, role) {
+  const num = parseInt(item.dataset.area);
+  const idx = parseInt(item.dataset.idx);
+  taskState[role][num][idx] = !taskState[role][num][idx];
+  const checked = taskState[role][num][idx];
+  const chk = document.getElementById('chk-' + num + '-' + idx);
+  chk.classList.toggle('checked', checked);
+  item.classList.toggle('done', checked);
+  updateAreaCount(num, role);
+  updateProgress(role);
+}
+
+function updateAreaCount(num, role) {
+  const states = taskState[role][num];
+  const done = states.filter(Boolean).length;
+  const total = states.length;
+  const countEl = document.getElementById('task-count-' + num);
+  if (countEl) {
+    countEl.textContent = done + '/' + total;
+    countEl.classList.toggle('complete', done === total);
+  }
+  const wrap = document.getElementById('area-wrap-' + num);
+  if (wrap) wrap.classList.toggle('all-done', done === total);
+}
+
+function updateProgress(role) {
+  const areas = ROLE_AREAS[role] || [];
+  let total = 0, done = 0;
+  areas.forEach(a => {
+    const states = taskState[role] && taskState[role][a.num] ? taskState[role][a.num] : [];
+    total += states.length;
+    done += states.filter(Boolean).length;
+  });
+  const pct = total > 0 ? (done / total) * 100 : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('count-label').textContent = done + ' of ' + total + ' tasks completed';
+}
+
+// Role select
 document.getElementById('role-select').addEventListener('change', function() {
   const role = this.value;
   const areasCard = document.getElementById('areas-card');
   const resultCard = document.getElementById('result-card');
-  const areasList = document.getElementById('areas-list');
-  const badge = document.getElementById('role-badge');
-
   if (!role) {
     areasCard.classList.remove('visible');
     resultCard.classList.remove('visible');
     return;
   }
-
   const areas = ROLE_AREAS[role] || [];
-  badge.textContent = role + ' — ' + areas.length + ' area' + (areas.length !== 1 ? 's' : '');
-
-  areasList.innerHTML = areas.map(a => `
-    <div class="area-item" id="area-wrap-${a.num}">
-      <div class="area-header" onclick="toggleArea(${a.num})">
-        <div class="area-label">
-          <span class="area-num">Area ${a.num}</span>
-          ${a.name}
-        </div>
-        <span class="task-count" id="task-count-${a.num}">0/${a.tasks.length}</span>
-        <span class="expand-icon" id="expand-${a.num}">▸</span>
-      </div>
-      <div class="task-list" id="tasks-${a.num}" style="display:none">
-        ${a.tasks.map((t, i) => `
-          <div class="task-item">
-            <input type="checkbox" class="task-checkbox" id="task-${a.num}-${i}" data-area="${a.num}" data-area-name="${a.name}" onchange="onTaskCheck(${a.num})">
-            <label for="task-${a.num}-${i}">${t}</label>
-          </div>
-        `).join('')}
-      </div>
-    </div>
-  `).join('');
-
-  updateProgress();
+  document.getElementById('role-badge').textContent = role + ' — ' + areas.length + ' area' + (areas.length !== 1 ? 's' : '');
+  buildAreas(role);
   areasCard.classList.add('visible');
   resultCard.classList.add('visible');
 });
 
-function toggleArea(num) {
-  const tasks = document.getElementById('tasks-' + num);
-  const icon = document.getElementById('expand-' + num);
-  const open = tasks.style.display !== 'none';
-  tasks.style.display = open ? 'none' : 'block';
-  icon.classList.toggle('open', !open);
-}
-
-function onTaskCheck(areaNum) {
-  const taskBoxes = document.querySelectorAll(`.task-checkbox[data-area="${areaNum}"]`);
-  const checkedCount = [...taskBoxes].filter(cb => cb.checked).length;
-  const total = taskBoxes.length;
-  const countEl = document.getElementById('task-count-' + areaNum);
-  countEl.textContent = checkedCount + '/' + total;
-  countEl.classList.toggle('complete', checkedCount === total);
-  document.getElementById('area-wrap-' + areaNum).classList.toggle('all-done', checkedCount === total);
-  updateProgress();
-}
-
-function updateProgress() {
-  const allTasks = document.querySelectorAll('.task-checkbox');
-  const checkedTasks = document.querySelectorAll('.task-checkbox:checked');
-  const total = allTasks.length;
-  const checked = checkedTasks.length;
-  const pct = total > 0 ? (checked / total) * 100 : 0;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('count-label').textContent = checked + ' of ' + total + ' tasks completed';
-}
-
-document.querySelectorAll('.result-btn').forEach(btn => {
-  btn.addEventListener('click', function() {
-    document.querySelectorAll('.result-btn').forEach(b => b.classList.remove('active'));
-    this.classList.add('active');
-    selectedResult = this.dataset.val;
-  });
+// Result buttons — touch safe
+document.getElementById('result-options').addEventListener('touchend', function(e) {
+  e.preventDefault();
+  const btn = e.target.closest('.result-btn');
+  if (btn) selectResult(btn);
 });
+document.getElementById('result-options').addEventListener('click', function(e) {
+  const btn = e.target.closest('.result-btn');
+  if (btn) selectResult(btn);
+});
+
+function selectResult(btn) {
+  document.querySelectorAll('.result-btn').forEach(b => {
+    b.classList.remove('active-pass', 'active-attention', 'active-fail');
+  });
+  selectedResult = btn.dataset.val;
+  if (selectedResult === 'Pass') btn.classList.add('active-pass');
+  else if (selectedResult === 'Needs Attention') btn.classList.add('active-attention');
+  else if (selectedResult === 'Fail') btn.classList.add('active-fail');
+}
 
 function showError(msg) {
   const el = document.getElementById('error-msg');
@@ -672,31 +639,24 @@ async function submitForm() {
   if (!role) return showError('Please select your cleaning role.');
   if (!selectedResult) return showError('Please select an overall result.');
 
-  // Derive area completion from task checkboxes
-  const areaEls = document.querySelectorAll('[id^="area-wrap-"]');
+  const areas = ROLE_AREAS[role] || [];
   const areasCompleted = [], areasSkipped = [];
-  areaEls.forEach(wrap => {
-    const num = wrap.id.replace('area-wrap-', '');
-    const tasks = wrap.querySelectorAll('.task-checkbox');
-    const done = [...tasks].filter(cb => cb.checked).length;
-    const name = tasks[0] ? tasks[0].dataset.areaName : num;
-    if (done === tasks.length && tasks.length > 0) areasCompleted.push(name);
-    else areasSkipped.push(name);
+  areas.forEach(a => {
+    const states = taskState[role] && taskState[role][a.num] ? taskState[role][a.num] : [];
+    const done = states.filter(Boolean).length;
+    if (done === states.length && states.length > 0) areasCompleted.push(a.name);
+    else areasSkipped.push(a.name);
   });
-  const totalAreas = areasCompleted.length + areasSkipped.length;
 
   const now = new Date();
   const timestamp = now.toLocaleString('en-AU', { timeZone: 'Australia/Perth' });
   const dateKey = now.toLocaleDateString('en-AU', { timeZone: 'Australia/Perth' });
 
   const payload = {
-    timestamp,
-    dateKey,
-    staff,
-    role,
+    timestamp, dateKey, staff, role,
     areasCompleted: areasCompleted.join(', '),
     areasSkipped: areasSkipped.join(', '),
-    totalAreas,
+    totalAreas: areas.length,
     completedCount: areasCompleted.length,
     result: selectedResult,
     notes
@@ -713,10 +673,9 @@ async function submitForm() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     });
-
     document.getElementById('main-form').style.display = 'none';
     document.getElementById('success-screen').classList.add('visible');
-  } catch (err) {
+  } catch(err) {
     showError('Submission failed. Check your connection and try again.');
     btn.disabled = false;
     btn.textContent = 'Submit Cleaning Record';
@@ -729,13 +688,20 @@ function resetForm() {
   document.getElementById('notes').value = '';
   document.getElementById('areas-card').classList.remove('visible');
   document.getElementById('result-card').classList.remove('visible');
-  document.querySelectorAll('.result-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.result-btn').forEach(b => b.classList.remove('active-pass','active-attention','active-fail'));
   selectedResult = '';
   document.getElementById('main-form').style.display = 'block';
   document.getElementById('success-screen').classList.remove('visible');
-  document.getElementById('submit-btn').disabled = false;
-  document.getElementById('submit-btn').textContent = 'Submit Cleaning Record';
+  const btn = document.getElementById('submit-btn');
+  btn.disabled = false;
+  btn.textContent = 'Submit Cleaning Record';
 }
+
+// Wire up submit and reset — touch safe
+document.getElementById('submit-btn').addEventListener('touchend', function(e) { e.preventDefault(); submitForm(); });
+document.getElementById('submit-btn').addEventListener('click', submitForm);
+document.getElementById('reset-btn').addEventListener('touchend', function(e) { e.preventDefault(); resetForm(); });
+document.getElementById('reset-btn').addEventListener('click', resetForm);
 </script>
 </body>
 </html>
